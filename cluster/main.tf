@@ -97,7 +97,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
 
   disk {
     datastore_id = each.value.disk_id
-    file_id      = var.cloudimg[var.node]
+    file_id      = var.cloudimg[each.value.node]
     interface    = "scsi0"
     size         = each.value.disk_size
   }
