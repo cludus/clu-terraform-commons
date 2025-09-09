@@ -65,7 +65,7 @@ variable "vms" {
 // Resource to define VMs in the cluster
 resource "proxmox_virtual_environment_vm" "vm" {
   for_each    = var.vms
-  name        = "${var.cluster}${each.key}-${each.value.kube_type}"
+  name        = "${var.cluster}${each.key}"
   description = "${var.cluster}${each.key} ${each.value.kube_type}"
   tags        = each.value.tags
 
