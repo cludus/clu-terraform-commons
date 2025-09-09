@@ -32,8 +32,16 @@ variable "gateway" {
   type = string
 }
 
+variable "bridge" {
+  type = string
+}
+
 variable "node" {
   type = string
+}
+
+variable "dns_servers" {
+  type = list(string)
 }
 
 // Variable for the first network configuration
@@ -46,7 +54,7 @@ variable "net" {
 
 // Resource to define the first VLAN for the router
 resource "proxmox_virtual_environment_network_linux_vlan" "lan" {
-  name     = "vmbr0.${var.net.vlan}"
+  name     = "${var.bridge}.${var.net.vlan}"
   node_name = var.node
   comment   = "${var.name}-lan"
 }
@@ -101,12 +109,11 @@ resource "proxmox_virtual_environment_vm" "proxy" {
 
   // Network device configuration for the VM
   network_device {
-    bridge   = "vmbr0"
-    vlan_id  =  100
+    bridge   = var.bridge
   }
 
   network_device {
-    bridge   = "vmbr0"
+    bridge   = var.bridge
     vlan_id  =  var.net.vlan
   }
 
@@ -141,7 +148,7 @@ resource "proxmox_virtual_environment_vm" "proxy" {
 
     // DNS configuration for the VM
     dns {
-      servers = [ "8.8.8.8" ]
+      servers = var.dns_servers
     }
 
     // User account configuration for the VM
@@ -155,7 +162,7 @@ resource "proxmox_virtual_environment_vm" "proxy" {
 
 // Resource to generate a random password for the VM
 resource "random_password" "vm_password" {
-  length           = 16
+  length           = 32
   override_special = "_%@"
   special          = true
 }

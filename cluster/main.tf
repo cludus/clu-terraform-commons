@@ -139,14 +139,14 @@ resource "proxmox_virtual_environment_vm" "vm" {
 
 // Resource to generate random cluster token
 resource "random_password" "cluster_token" {
-  length           = 32
+  length           = 64
   special          = false
 }
 
 // Resource to generate random passwords for the VMs
 resource "random_password" "vm_password" {
   for_each         = var.vms
-  length           = 16
+  length           = 32
   override_special = "_%@"
   special          = true
 }

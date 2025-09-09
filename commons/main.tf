@@ -8,6 +8,10 @@ terraform {
   }
 }
 
+variable "images_name" {
+  type = string
+}
+
 variable "nodes" {
   type = list(string)
 }
@@ -19,7 +23,7 @@ resource "proxmox_virtual_environment_download_file" "alpine" {
   datastore_id = "local"
   node_name    = each.value
   url          = "https://dl-cdn.alpinelinux.org/alpine/v3.22/releases/cloud/nocloud_alpine-3.22.1-x86_64-bios-cloudinit-r0.qcow2"
-  file_name    = "alpine.img"
+  file_name    = "alpine-${var.images_name}.img"
 }
 
 // Resource to download the Ubuntu cloud image
@@ -29,13 +33,13 @@ resource "proxmox_virtual_environment_download_file" "ubuntu" {
   datastore_id = "local"
   node_name    = each.value
   url          = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
-  file_name    = "ubuntu.img"
+  file_name    = "ubuntu-${var.images_name}.img"
 }
 
 // Output the IDs of the downloaded cloud images
 output "cloudimg" {
   value = {
-    alpine = proxmox_virtual_environment_download_file.alpine[*].id,
-    ubuntu = proxmox_virtual_environment_download_file.ubuntu[*].id
+    alpine = [for k, v in var.nodes : proxmox_virtual_environment_download_file.alpine[v].id]
+    ubuntu = [for k, v in var.nodes : proxmox_virtual_environment_download_file.ubuntu[v].id]
   }
 }
