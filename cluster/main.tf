@@ -170,7 +170,7 @@ output "access" {
     password      = [for k, v in var.vms : random_password.vm_password[k].result]
     public_key    = [for k, v in var.vms : tls_private_key.vm_key[k].public_key_openssh]
     private_key   = [for k, v in var.vms : tls_private_key.vm_key[k].private_key_openssh]
-    disk_type     = [for k, v in var.vms : "${v.disk_type}"]
+    disk_type     = [for k, v in var.vms : "${v.disk_id}"]
   }
   sensitive = true
 }
