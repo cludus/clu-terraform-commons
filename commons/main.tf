@@ -39,7 +39,11 @@ resource "proxmox_virtual_environment_download_file" "ubuntu" {
 // Output the IDs of the downloaded cloud images
 output "cloudimg" {
   value = {
-    alpine = [for k, v in var.nodes : proxmox_virtual_environment_download_file.alpine[v].id]
-    ubuntu = [for k, v in var.nodes : proxmox_virtual_environment_download_file.ubuntu[v].id]
+    alpine = {
+      for k, v in var.nodes : v => proxmox_virtual_environment_download_file.alpine[v].id
+    }
+    ubuntu = {
+      for k, v in var.nodes : v => proxmox_virtual_environment_download_file.ubuntu[v].id
+    }
   }
 }

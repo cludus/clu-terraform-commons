@@ -24,7 +24,7 @@ variable "ip" {
 
 // Variable for the cloud image to use
 variable "cloudimg" {
-  type = string
+  type = map(string)
 }
 
 // Variable for the network gateway
@@ -102,7 +102,7 @@ resource "proxmox_virtual_environment_vm" "proxy" {
   // Disk configuration for the VM
   disk {
     datastore_id = "local-lvm"
-    file_id      = var.cloudimg
+    file_id      = var.cloudimg[var.node]
     interface    = "scsi0"
     size         = 20
   }
