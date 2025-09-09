@@ -24,7 +24,7 @@ variable "cluster_net" {
 
 // Variable for the cloud image to use
 variable "cloudimg" {
-  type = string
+  type = map(string)
 }
 
 // Variable for the network gateway
@@ -97,7 +97,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
 
   disk {
     datastore_id = each.value.disk_id
-    file_id      = var.cloudimg
+    file_id      = var.cloudimg[var.node]
     interface    = "scsi0"
     size         = each.value.disk_size
   }
