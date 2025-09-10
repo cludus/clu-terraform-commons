@@ -162,7 +162,7 @@ resource "tls_private_key" "vm_key" {
 output "access" {
   value     = {
     nodes = {
-      for k, v in var.vms : v => {
+      for k, v in var.vms : k => {
         os            = "alpine"
         server_type   = v.kube_type
         name          = "${var.cluster}${k}"
