@@ -161,16 +161,20 @@ resource "tls_private_key" "vm_key" {
 // Output sensitive access information for the cluster VMs
 output "access" {
   value     = {
-    os            = [for k, v in var.vms : "alpine"]
-    server_type   = [for k, v in var.vms : "${v.kube_type}"]
-    name          = [for k, v in var.vms : "${var.cluster}${k}"]
-    cluster_name  = [for k, v in var.vms : "${var.cluster}"]
-    cluster_token = [for k, v in var.vms : random_password.cluster_token.result]
-    ip_address    = [for k, v in var.vms : "${var.cluster_net}.${v.ordinal+100}"]
-    password      = [for k, v in var.vms : random_password.vm_password[k].result]
-    public_key    = [for k, v in var.vms : tls_private_key.vm_key[k].public_key_openssh]
-    private_key   = [for k, v in var.vms : tls_private_key.vm_key[k].private_key_openssh]
-    disk_type     = [for k, v in var.vms : "${v.disk_id}"]
+    nodes = {
+      for k, v in var.vms : v => {
+        os            = "alpine"
+        server_type   = v.kube_type
+        name          = "${var.cluster}${k}"
+        cluster_name  = var.cluster
+        cluster_token = random_password.cluster_token.result
+        ip_address    = "${var.cluster_net}.${v.ordinal+100}"
+        password      = random_password.vm_password[k].result
+        public_key    = tls_private_key.vm_key[k].public_key_openssh
+        private_key   = tls_private_key.vm_key[k].private_key_openssh
+        disk_id     = "${v.disk_id}"
+      }
+    }
   }
   sensitive = true
 }
