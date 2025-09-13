@@ -186,6 +186,7 @@ output "access" {
     password     = random_password.vm_password.result,
     private_key  = tls_private_key.vm_key.private_key_openssh
     public_key   = tls_private_key.vm_key.public_key_openssh
+    network      = var.net.cidr
   }
   sensitive = true
 }
