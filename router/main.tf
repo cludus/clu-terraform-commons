@@ -56,18 +56,8 @@ variable "tags" {
   type = list(string)
 }
 
-// Resource to define the first VLAN for the router
-resource "proxmox_virtual_environment_network_linux_vlan" "lan" {
-  name     = "${var.bridge}.${var.net.vlan}"
-  node_name = var.node
-  comment   = "${var.name}-lan"
-}
-
 // Resource to define the router VM with its configuration
 resource "proxmox_virtual_environment_vm" "proxy" {
-  depends_on = [ 
-    proxmox_virtual_environment_network_linux_vlan.lan,
-  ]
   name        = var.name
   description = var.name
   tags        = var.tags
