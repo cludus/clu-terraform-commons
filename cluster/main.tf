@@ -167,7 +167,7 @@ output "access" {
       name          = "${var.cluster}${k}"
       cluster_name  = var.cluster
       cluster_token = random_password.cluster_token.result
-      ip_address    = "${var.cluster_net}.${v.ordinal+100}"
+      ip_address    = "${var.cluster_net}.${v.ordinal+30}"
       password      = random_password.vm_password[k].result
       public_key    = tls_private_key.vm_key[k].public_key_openssh
       private_key   = tls_private_key.vm_key[k].private_key_openssh
@@ -185,7 +185,7 @@ output "hosts" {
       name          = "${var.cluster}${k}"
       cluster_name  = var.cluster
       cluster_token = random_password.cluster_token.result
-      ip_address    = "${var.cluster_net}.${v.ordinal+100}"
+      ip_address    = "${var.cluster_net}.${v.ordinal+30}"
       disk_id     = "${v.disk_id}"
     }
   }
