@@ -79,6 +79,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
   cpu {
     cores = each.value.cpus
     sockets = each.value.sockets
+    type = "x86-64-v4"
   }
 
   agent {
