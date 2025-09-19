@@ -54,6 +54,7 @@ variable "vms" {
     kube_type  = string
     memory     = number
     cpus       = number
+    cpu_type   = string
     sockets    = number
     disk_id    = string
     disk_size  = number
@@ -79,7 +80,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
   cpu {
     cores = each.value.cpus
     sockets = each.value.sockets
-    type = "x86-64-v4"
+    type = each.value.cpu_type != "" ? each.value.cpu_type : "x86-64-v4"
   }
 
   agent {
