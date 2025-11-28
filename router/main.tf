@@ -36,6 +36,10 @@ variable "bridge" {
   type = string
 }
 
+variable "internal_bridge" {
+  type = string
+}
+
 variable "node" {
   type = string
 }
@@ -107,7 +111,7 @@ resource "proxmox_virtual_environment_vm" "proxy" {
   }
 
   network_device {
-    bridge   = var.bridge
+    bridge   = var.internal_bridge
     vlan_id  =  var.net.vlan
   }
 
