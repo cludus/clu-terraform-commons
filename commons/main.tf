@@ -17,7 +17,7 @@ variable "nodes" {
 }
 
 // Resource to download the Alpine Linux cloud image
-resource "proxmox_virtual_environment_download_file" "alpine" {
+resource "proxmox_download_file" "alpine" {
   for_each     = toset(var.nodes)
   content_type = "iso"
   datastore_id = "local"
@@ -27,7 +27,7 @@ resource "proxmox_virtual_environment_download_file" "alpine" {
 }
 
 // Resource to download the Ubuntu cloud image
-resource "proxmox_virtual_environment_download_file" "ubuntu" {
+resource "proxmox_download_file" "ubuntu" {
   for_each     = toset(var.nodes)
   content_type = "iso"
   datastore_id = "local"
