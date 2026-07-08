@@ -40,10 +40,10 @@ resource "proxmox_download_file" "ubuntu" {
 output "cloudimg" {
   value = {
     alpine = {
-      for k, v in var.nodes : v => proxmox_virtual_environment_download_file.alpine[v].id
+      for k, v in var.nodes : v => proxmox_download_file.alpine[v].id
     }
     ubuntu = {
-      for k, v in var.nodes : v => proxmox_virtual_environment_download_file.ubuntu[v].id
+      for k, v in var.nodes : v => proxmox_download_file.ubuntu[v].id
     }
   }
 }
