@@ -3,7 +3,7 @@ terraform {
   required_providers {
     proxmox = {
       source = "bpg/proxmox"
-      version = "0.81.0"
+      version = "0.111.1"
     }
   }
 }
@@ -22,7 +22,7 @@ resource "proxmox_virtual_environment_download_file" "alpine" {
   content_type = "iso"
   datastore_id = "local"
   node_name    = each.value
-  url          = "https://dl-cdn.alpinelinux.org/alpine/v3.22/releases/cloud/nocloud_alpine-3.22.1-x86_64-bios-cloudinit-r0.qcow2"
+  url          = "https://dl-cdn.alpinelinux.org/alpine/v3.24/releases/cloud/generic_alpine-3.24.1-x86_64-bios-cloudinit-r0.qcow2"
   file_name    = "alpine-${var.images_name}.img"
 }
 
